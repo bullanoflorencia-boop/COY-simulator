@@ -110,11 +110,12 @@ header { background: var(--bg); border-bottom: 1px solid var(--border); padding:
 
 <header>
   <div class="logo">
-    <div class="logo-dot"><span>JA</span></div>
-    <div>
-      <div class="logo-text">JA Américas</div>
-      <div class="logo-sub">Company of the Year</div>
-    </div>
+    <svg height="32" viewBox="0 0 120 32" xmlns="http://www.w3.org/2000/svg">
+  <rect width="32" height="32" rx="7" fill="#1D9E75"/>
+  <text x="16" y="22" font-family="-apple-system,sans-serif" font-size="13" font-weight="800" fill="white" text-anchor="middle">JA</text>
+  <text x="44" y="14" font-family="-apple-system,sans-serif" font-size="11" font-weight="700" fill="#1a1a1a">JA Américas</text>
+  <text x="44" y="26" font-family="-apple-system,sans-serif" font-size="9" font-weight="400" fill="#555">Company of the Year</text>
+</svg>
   </div>
   <span class="header-tag">Application Simulator</span>
 </header>
@@ -125,6 +126,12 @@ header { background: var(--bg); border-bottom: 1px solid var(--border); padding:
   <div class="screen active" id="screen-intro">
     <div class="card">
       <div class="intro-hero">
+        <svg height="44" viewBox="0 0 160 44" xmlns="http://www.w3.org/2000/svg" style="margin:0 auto 1.25rem;display:block;">
+  <rect width="44" height="44" rx="10" fill="#1D9E75"/>
+  <text x="22" y="30" font-family="-apple-system,sans-serif" font-size="18" font-weight="800" fill="white" text-anchor="middle">JA</text>
+  <text x="54" y="18" font-family="-apple-system,sans-serif" font-size="13" font-weight="700" fill="#1a1a1a">JA Américas</text>
+  <text x="54" y="34" font-family="-apple-system,sans-serif" font-size="11" font-weight="400" fill="#555">Company of the Year</text>
+</svg>
         <div class="step-badge" style="margin-bottom:1rem;">Practice tool · COY</div>
         <div class="intro-title">Is your company ready for COY?</div>
         <div class="intro-sub">Practice your application using the same criteria real judges use. Fill it in, get honest feedback, and improve your report before submitting.</div>
@@ -163,16 +170,16 @@ header { background: var(--bg); border-bottom: 1px solid var(--border); padding:
       <div class="step-desc">Start with the basics. The more specific you are, the more useful your feedback will be.</div>
       <div class="field">
         <label>Company name</label>
-        <input type="text" id="f_name" placeholder="e.g. EcoLamp S.A.">
+        <input type="text" id="f_name">
       </div>
       <div class="field">
         <label>What product or service does your company offer?</label>
-        <textarea id="f_product" placeholder="Describe it clearly: what is it, who is it for, and what makes it worth buying?"></textarea>
+        <textarea id="f_product"></textarea>
         <div class="char-count" id="cc_product">0 chars</div>
       </div>
       <div class="field">
         <label>What problem or opportunity motivated your idea?</label>
-        <textarea id="f_problem" placeholder="e.g. In our city, 40% of households have frequent power outages but no affordable alternative. We saw a real opportunity there."></textarea>
+        <textarea id="f_problem"></textarea>
       </div>
       <div class="nav-row">
         <button class="btn btn-ghost" onclick="goTo('intro')">← Back</button>
@@ -193,15 +200,15 @@ header { background: var(--bg); border-bottom: 1px solid var(--border); padding:
       <div class="step-desc">Judges look for clear internal roles, financial discipline, and transparent shareholder communication. This is worth 25 points — the most of any dimension.</div>
       <div class="field">
         <label>What roles or departments did you have? Who was responsible for what?</label>
-        <textarea id="f_roles" placeholder="e.g. We had a CEO, CFO, Marketing Director, and Head of Production. Each director led weekly area meetings and reported to the full team. Major decisions were made by vote."></textarea>
+        <textarea id="f_roles"></textarea>
       </div>
       <div class="field">
         <label>How did you communicate with shareholders? Did you hold meetings or send reports?</label>
-        <textarea id="f_shareholders" placeholder="e.g. We held 2 formal shareholder assemblies and sent monthly progress reports by email including sales data, cost breakdowns, and next steps."></textarea>
+        <textarea id="f_shareholders"></textarea>
       </div>
       <div class="field">
         <label>Describe your finances. Did you reach break-even? Use real numbers if you can.</label>
-        <textarea id="f_finance" placeholder="e.g. We raised $200 in capital (10 shares at $20). Total costs: $145. Total revenue: $320. Net profit: $175. Break-even reached after selling 18 units."></textarea>
+        <textarea id="f_finance"></textarea>
         <div class="field-hint">Numbers make this section significantly stronger. Include capital, costs, revenue, profit, and break-even point.</div>
       </div>
       <div class="nav-row">
@@ -223,15 +230,15 @@ header { background: var(--bg); border-bottom: 1px solid var(--border); padding:
       <div class="step-desc">Strong companies show measurable impact in all three areas — not just profit. Each pillar carries equal weight. Worth 20 points.</div>
       <div class="field">
         <label>Economic impact: how did you generate value? Include numbers.</label>
-        <textarea id="f_economic" placeholder="e.g. Net profit of $175. We returned 87% of the initial investment to shareholders. Revenue grew 60% between month 1 and month 2 of sales."></textarea>
+        <textarea id="f_economic"></textarea>
       </div>
       <div class="field">
         <label>Social or community impact: how did your company benefit people beyond your team?</label>
-        <textarea id="f_social" placeholder="e.g. We donated 5% of profits to a local food bank (3 donations, $26 total). We ran a financial literacy workshop for 60 students at our school."></textarea>
+        <textarea id="f_social"></textarea>
       </div>
       <div class="field">
         <label>Environmental impact: what did you do to reduce your environmental footprint?</label>
-        <textarea id="f_env" placeholder="e.g. Our product uses recycled sugarcane waste. Zero single-use plastic in packaging. Each unit replaces a conventional plastic product and saves ~200g of CO₂."></textarea>
+        <textarea id="f_env"></textarea>
       </div>
       <div class="nav-row">
         <button class="btn btn-ghost" onclick="goTo('s2')">← Back</button>
@@ -252,11 +259,11 @@ header { background: var(--bg); border-bottom: 1px solid var(--border); padding:
       <div class="step-desc">Innovation doesn't mean high-tech — a creative approach, new materials, or a novel business model all count. Worth 15 points.</div>
       <div class="field">
         <label>What is genuinely new or different about your product? How does it compare to existing alternatives?</label>
-        <textarea id="f_innovation" placeholder="e.g. Unlike imported alternatives (3x more expensive), ours is locally made from biodegradable materials. No competitor offers our combination of price + durability + sustainability."></textarea>
+        <textarea id="f_innovation"></textarea>
       </div>
       <div class="field">
         <label>Did you use any technology or methodology (Design Thinking, Canvas, prototyping, digital tools)?</label>
-        <textarea id="f_tech" placeholder="e.g. We used 3D printing for prototyping and tested 4 designs before going to production. We ran Design Thinking sessions with 40 potential users before launching."></textarea>
+        <textarea id="f_tech"></textarea>
       </div>
       <div class="nav-row">
         <button class="btn btn-ghost" onclick="goTo('s3')">← Back</button>
@@ -277,11 +284,11 @@ header { background: var(--bg); border-bottom: 1px solid var(--border); padding:
       <div class="step-desc">Judges want to see the idea has a future beyond the school program. External recognition — even small — is a strong signal. Worth 15 points.</div>
       <div class="field">
         <label>How could your company grow? New cities, new products, new customers?</label>
-        <textarea id="f_scale" placeholder="e.g. We plan to expand to 3 neighboring cities and add a solar version. We already received orders from 2 other provinces and are in talks with a local retailer."></textarea>
+        <textarea id="f_scale"></textarea>
       </div>
       <div class="field">
         <label>Did you receive any external recognition, partnerships, certifications, or media coverage?</label>
-        <textarea id="f_recognition" placeholder="e.g. Featured in a local newspaper and a regional radio show. Received a certification from an industry NGO. Met with the municipal education department about scaling our program."></textarea>
+        <textarea id="f_recognition"></textarea>
         <div class="field-hint">Include everything — a social media mention, a meeting with an official, or an industry seal all count.</div>
       </div>
       <div class="nav-row">
@@ -302,16 +309,12 @@ header { background: var(--bg); border-bottom: 1px solid var(--border); padding:
       <div class="step-title">How did your team work together?</div>
       <div class="step-desc">This is the human story behind the company — commitment, resilience, and growth. It matters especially in the interview round at COY. Worth 15 points.</div>
       <div class="field">
-        <label>What was your team's attendance like throughout the program?</label>
-        <textarea id="f_attendance" placeholder="e.g. Average attendance was 88% across weekly sessions. Two members had scheduling conflicts in month 2 but we reorganized tasks so no deliverables were delayed."></textarea>
-      </div>
-      <div class="field">
         <label>Describe a specific challenge your team faced and how you solved it.</label>
-        <textarea id="f_challenge" placeholder="e.g. Our supplier backed out 2 weeks before our sales launch. We spent 3 days contacting 15 alternatives, compared prices and quality, and found one that met our standards at a lower cost — which actually improved our margin."></textarea>
+        <textarea id="f_challenge"></textarea>
       </div>
       <div class="field">
         <label>How did this experience change each of you? What did you learn individually and as a group?</label>
-        <textarea id="f_growth" placeholder="e.g. Our CEO went from being afraid of public speaking to presenting to 200 people at the regional fair. Our CFO learned to build a real P&L. As a group, we learned that honest disagreements make better decisions."></textarea>
+        <textarea id="f_growth"></textarea>
       </div>
       <div class="nav-row">
         <button class="btn btn-ghost" onclick="goTo('s5')">← Back</button>
@@ -406,10 +409,8 @@ function scoreScale() {
 }
 
 function scoreTeam() {
-  var att = getVal('f_attendance'), ch = getVal('f_challenge'), gr = getVal('f_growth');
+  var ch = getVal('f_challenge'), gr = getVal('f_growth');
   var s = 0;
-  if (att.length > 30) s++;
-  if (/\d/.test(att) || /%/.test(att)) s += 0.5;
   if (ch.length > 60) s++;
   if (/solved|resolved|found|decided|changed|adapt|pivot|contact|search|alter/i.test(ch)) s += 0.5;
   if (gr.length > 60) s++;
