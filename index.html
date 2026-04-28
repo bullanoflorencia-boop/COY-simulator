@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COY – Application Simulator · JA Américas</title>
+<style>
+:root {
+  --green: #1D9E75;
+  --green-light: #E1F5EE;
+  --green-dark: #0F6E56;
+  --text: #1a1a1a;
+  --text-2: #555;
+  --text-3: #888;
+  --border: #e2e2e0;
+  --bg: #ffffff;
+  --bg-2: #f6f6f4;
+  --bg-success: #E1F5EE; --text-success: #0F6E56;
+  --bg-info: #E6F1FB;    --text-info: #185FA5;
+  --bg-warn: #FAEEDA;    --text-warn: #854F0B;
+  --bg-danger: #FCEBEB;  --text-danger: #A32D2D;
+  --r: 10px; --r-sm: 6px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg-2); color: var(--text); min-height: 100vh; }
+
+header { background: var(--bg); border-bottom: 1px solid var(--border); padding: 0 1.25rem; height: 52px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
+.logo { display: flex; align-items: center; gap: 9px; }
+.logo-dot { width: 28px; height: 28px; background: var(--green); border-radius: 7px; display: flex; align-items: center; justify-content: center; }
+.logo-dot span { color: white; font-weight: 800; font-size: 12px; }
+.logo-text { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.2; }
+.logo-sub { font-size: 11px; font-weight: 400; color: var(--text-2); }
+.header-tag { font-size: 11px; font-weight: 600; color: var(--green-dark); background: var(--green-light); padding: 3px 10px; border-radius: 20px; }
+
+.main { max-width: 640px; margin: 0 auto; padding: 2rem 1.25rem 5rem; }
+
+.progress-wrap { margin-bottom: 1.5rem; }
+.progress-top { display: flex; justify-content: space-between; margin-bottom: 6px; }
+.progress-label { font-size: 12px; color: var(--text-3); }
+.progress-step { font-size: 12px; font-weight: 600; color: var(--text-2); }
+.progress-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--green); border-radius: 2px; transition: width 0.3s; }
+
+.card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--r); padding: 1.75rem 1.5rem; margin-bottom: 1rem; }
+
+.step-badge { font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--green-dark); background: var(--green-light); display: inline-block; padding: 3px 10px; border-radius: 20px; margin-bottom: 0.85rem; }
+.step-title { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 6px; line-height: 1.3; }
+.step-desc { font-size: 14px; color: var(--text-2); line-height: 1.65; margin-bottom: 1.5rem; }
+
+.field { margin-bottom: 1.2rem; }
+.field label { display: block; font-size: 13px; font-weight: 600; color: var(--text-2); margin-bottom: 5px; }
+.field textarea, .field select, .field input[type="text"] { width: 100%; border: 1px solid var(--border); border-radius: var(--r-sm); padding: 9px 11px; font-size: 14px; font-family: inherit; color: var(--text); background: var(--bg); resize: vertical; line-height: 1.55; }
+.field textarea { min-height: 88px; }
+.field textarea:focus, .field select:focus, .field input:focus { outline: none; border-color: var(--green); }
+.field-hint { font-size: 12px; color: var(--text-3); margin-top: 4px; line-height: 1.5; }
+.char-count { font-size: 11px; color: var(--text-3); text-align: right; margin-top: 3px; }
+
+.nav-row { display: flex; gap: 8px; align-items: center; margin-top: 1.5rem; flex-wrap: wrap; }
+.btn { padding: 9px 20px; border-radius: var(--r-sm); font-size: 14px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-family: inherit; transition: all 0.15s; }
+.btn:hover { background: var(--bg-2); }
+.btn-primary { background: var(--green); color: white; border-color: var(--green); }
+.btn-primary:hover { background: var(--green-dark); border-color: var(--green-dark); }
+.btn-ghost { color: var(--text-2); border-color: transparent; background: transparent; }
+.btn-ghost:hover { background: var(--bg-2); border-color: var(--border); }
+
+.intro-hero { text-align: center; padding: 0.5rem 0 1.25rem; }
+.intro-title { font-size: 26px; font-weight: 800; color: var(--text); margin-bottom: 0.75rem; line-height: 1.25; }
+.intro-sub { font-size: 15px; color: var(--text-2); line-height: 1.7; max-width: 460px; margin: 0 auto 1.75rem; }
+.intro-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 1.75rem; text-align: left; }
+.intro-feat { background: var(--bg-2); border-radius: var(--r-sm); padding: 12px; }
+.feat-icon { font-size: 18px; margin-bottom: 5px; }
+.feat-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.feat-desc { font-size: 12px; color: var(--text-2); line-height: 1.45; }
+.intro-note { font-size: 12px; color: var(--text-3); line-height: 1.6; margin-top: 1rem; }
+
+.results-company { font-size: 22px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.results-sub { font-size: 14px; color: var(--text-2); margin-bottom: 1.25rem; }
+.overall-box { background: var(--bg-2); border-radius: var(--r-sm); padding: 1rem 1.25rem; margin-bottom: 0; border-left: 3px solid var(--green); }
+.overall-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--green-dark); margin-bottom: 6px; }
+.overall-text { font-size: 14px; color: var(--text-2); line-height: 1.65; }
+
+.dim-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--r); padding: 1.1rem 1.25rem; margin-bottom: 10px; }
+.dim-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px; gap: 10px; }
+.dim-name { font-size: 14px; font-weight: 700; color: var(--text); }
+.badge { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+.b-strong  { background: var(--bg-success); color: var(--text-success); }
+.b-good    { background: var(--bg-info);    color: var(--text-info); }
+.b-improve { background: var(--bg-warn);    color: var(--text-warn); }
+.b-weak    { background: var(--bg-danger);  color: var(--text-danger); }
+
+.dim-feedback { font-size: 13px; color: var(--text-2); line-height: 1.65; margin-bottom: 8px; }
+.dim-tip { background: var(--bg-2); border-radius: var(--r-sm); padding: 8px 11px; font-size: 13px; color: var(--text-2); line-height: 1.6; border-left: 2px solid #ccc; }
+.dim-tip strong { color: var(--text); font-weight: 600; }
+
+.disclaimer { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--r); padding: 1rem 1.25rem; margin-top: 1.25rem; }
+.disclaimer-title { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 5px; }
+.disclaimer p { font-size: 12px; color: var(--text-2); line-height: 1.65; }
+
+.screen { display: none; }
+.screen.active { display: block; }
+
+@media (max-width: 500px) {
+  .intro-grid { grid-template-columns: 1fr; }
+  .card { padding: 1.25rem 1rem; }
+  .intro-title { font-size: 22px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-dot"><span>JA</span></div>
+    <div>
+      <div class="logo-text">JA Américas</div>
+      <div class="logo-sub">Company of the Year</div>
+    </div>
+  </div>
+  <span class="header-tag">Application Simulator</span>
+</header>
+
+<div class="main">
+
+  <!-- INTRO -->
+  <div class="screen active" id="screen-intro">
+    <div class="card">
+      <div class="intro-hero">
+        <div class="step-badge" style="margin-bottom:1rem;">Practice tool · COY</div>
+        <div class="intro-title">Is your company ready for COY?</div>
+        <div class="intro-sub">Practice your application using the same criteria real judges use. Fill it in, get honest feedback, and improve your report before submitting.</div>
+        <div class="intro-grid">
+          <div class="intro-feat">
+            <div class="feat-icon">📋</div>
+            <div class="feat-title">6 sections</div>
+            <div class="feat-desc">All COY evaluation dimensions covered</div>
+          </div>
+          <div class="intro-feat">
+            <div class="feat-icon">💬</div>
+            <div class="feat-title">Real feedback</div>
+            <div class="feat-desc">Specific tips per area, not just scores</div>
+          </div>
+          <div class="intro-feat">
+            <div class="feat-icon">🔁</div>
+            <div class="feat-title">Try again</div>
+            <div class="feat-desc">Practice as many times as you need</div>
+          </div>
+        </div>
+        <button class="btn btn-primary" style="font-size:15px;padding:11px 32px;" onclick="goTo('s1')">Start →</button>
+        <div class="intro-note">Takes 10–15 minutes · No account needed · Nothing is saved or sent anywhere</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="screen" id="screen-s1">
+    <div class="progress-wrap">
+      <div class="progress-top"><span class="progress-label">Your application</span><span class="progress-step">1 of 6</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:16%"></div></div>
+    </div>
+    <div class="card">
+      <div class="step-badge">Step 1 of 6</div>
+      <div class="step-title">Tell us about your company</div>
+      <div class="step-desc">Start with the basics. The more specific you are, the more useful your feedback will be.</div>
+      <div class="field">
+        <label>Company name</label>
+        <input type="text" id="f_name" placeholder="e.g. EcoLamp S.A.">
+      </div>
+      <div class="field">
+        <label>What product or service does your company offer?</label>
+        <textarea id="f_product" placeholder="Describe it clearly: what is it, who is it for, and what makes it worth buying?"></textarea>
+        <div class="char-count" id="cc_product">0 chars</div>
+      </div>
+      <div class="field">
+        <label>What problem or opportunity motivated your idea?</label>
+        <textarea id="f_problem" placeholder="e.g. In our city, 40% of households have frequent power outages but no affordable alternative. We saw a real opportunity there."></textarea>
+      </div>
+      <div class="nav-row">
+        <button class="btn btn-ghost" onclick="goTo('intro')">← Back</button>
+        <button class="btn btn-primary" onclick="goTo('s2')">Continue →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="screen" id="screen-s2">
+    <div class="progress-wrap">
+      <div class="progress-top"><span class="progress-label">Your application</span><span class="progress-step">2 of 6</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:33%"></div></div>
+    </div>
+    <div class="card">
+      <div class="step-badge">Step 2 of 6 · Organizational management</div>
+      <div class="step-title">How did you run your company?</div>
+      <div class="step-desc">Judges look for clear internal roles, financial discipline, and transparent shareholder communication. This is worth 25 points — the most of any dimension.</div>
+      <div class="field">
+        <label>What roles or departments did you have? Who was responsible for what?</label>
+        <textarea id="f_roles" placeholder="e.g. We had a CEO, CFO, Marketing Director, and Head of Production. Each director led weekly area meetings and reported to the full team. Major decisions were made by vote."></textarea>
+      </div>
+      <div class="field">
+        <label>How did you communicate with shareholders? Did you hold meetings or send reports?</label>
+        <textarea id="f_shareholders" placeholder="e.g. We held 2 formal shareholder assemblies and sent monthly progress reports by email including sales data, cost breakdowns, and next steps."></textarea>
+      </div>
+      <div class="field">
+        <label>Describe your finances. Did you reach break-even? Use real numbers if you can.</label>
+        <textarea id="f_finance" placeholder="e.g. We raised $200 in capital (10 shares at $20). Total costs: $145. Total revenue: $320. Net profit: $175. Break-even reached after selling 18 units."></textarea>
+        <div class="field-hint">Numbers make this section significantly stronger. Include capital, costs, revenue, profit, and break-even point.</div>
+      </div>
+      <div class="nav-row">
+        <button class="btn btn-ghost" onclick="goTo('s1')">← Back</button>
+        <button class="btn btn-primary" onclick="goTo('s3')">Continue →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="screen" id="screen-s3">
+    <div class="progress-wrap">
+      <div class="progress-top"><span class="progress-label">Your application</span><span class="progress-step">3 of 6</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
+    </div>
+    <div class="card">
+      <div class="step-badge">Step 3 of 6 · Triple impact</div>
+      <div class="step-title">Economic, social and environmental impact</div>
+      <div class="step-desc">Strong companies show measurable impact in all three areas — not just profit. Each pillar carries equal weight. Worth 20 points.</div>
+      <div class="field">
+        <label>Economic impact: how did you generate value? Include numbers.</label>
+        <textarea id="f_economic" placeholder="e.g. Net profit of $175. We returned 87% of the initial investment to shareholders. Revenue grew 60% between month 1 and month 2 of sales."></textarea>
+      </div>
+      <div class="field">
+        <label>Social or community impact: how did your company benefit people beyond your team?</label>
+        <textarea id="f_social" placeholder="e.g. We donated 5% of profits to a local food bank (3 donations, $26 total). We ran a financial literacy workshop for 60 students at our school."></textarea>
+      </div>
+      <div class="field">
+        <label>Environmental impact: what did you do to reduce your environmental footprint?</label>
+        <textarea id="f_env" placeholder="e.g. Our product uses recycled sugarcane waste. Zero single-use plastic in packaging. Each unit replaces a conventional plastic product and saves ~200g of CO₂."></textarea>
+      </div>
+      <div class="nav-row">
+        <button class="btn btn-ghost" onclick="goTo('s2')">← Back</button>
+        <button class="btn btn-primary" onclick="goTo('s4')">Continue →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="screen" id="screen-s4">
+    <div class="progress-wrap">
+      <div class="progress-top"><span class="progress-label">Your application</span><span class="progress-step">4 of 6</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:66%"></div></div>
+    </div>
+    <div class="card">
+      <div class="step-badge">Step 4 of 6 · Innovation & technology</div>
+      <div class="step-title">What makes your solution innovative?</div>
+      <div class="step-desc">Innovation doesn't mean high-tech — a creative approach, new materials, or a novel business model all count. Worth 15 points.</div>
+      <div class="field">
+        <label>What is genuinely new or different about your product? How does it compare to existing alternatives?</label>
+        <textarea id="f_innovation" placeholder="e.g. Unlike imported alternatives (3x more expensive), ours is locally made from biodegradable materials. No competitor offers our combination of price + durability + sustainability."></textarea>
+      </div>
+      <div class="field">
+        <label>Did you use any technology or methodology (Design Thinking, Canvas, prototyping, digital tools)?</label>
+        <textarea id="f_tech" placeholder="e.g. We used 3D printing for prototyping and tested 4 designs before going to production. We ran Design Thinking sessions with 40 potential users before launching."></textarea>
+      </div>
+      <div class="nav-row">
+        <button class="btn btn-ghost" onclick="goTo('s3')">← Back</button>
+        <button class="btn btn-primary" onclick="goTo('s5')">Continue →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="screen" id="screen-s5">
+    <div class="progress-wrap">
+      <div class="progress-top"><span class="progress-label">Your application</span><span class="progress-step">5 of 6</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:83%"></div></div>
+    </div>
+    <div class="card">
+      <div class="step-badge">Step 5 of 6 · Projection & scalability</div>
+      <div class="step-title">Where could this company go?</div>
+      <div class="step-desc">Judges want to see the idea has a future beyond the school program. External recognition — even small — is a strong signal. Worth 15 points.</div>
+      <div class="field">
+        <label>How could your company grow? New cities, new products, new customers?</label>
+        <textarea id="f_scale" placeholder="e.g. We plan to expand to 3 neighboring cities and add a solar version. We already received orders from 2 other provinces and are in talks with a local retailer."></textarea>
+      </div>
+      <div class="field">
+        <label>Did you receive any external recognition, partnerships, certifications, or media coverage?</label>
+        <textarea id="f_recognition" placeholder="e.g. Featured in a local newspaper and a regional radio show. Received a certification from an industry NGO. Met with the municipal education department about scaling our program."></textarea>
+        <div class="field-hint">Include everything — a social media mention, a meeting with an official, or an industry seal all count.</div>
+      </div>
+      <div class="nav-row">
+        <button class="btn btn-ghost" onclick="goTo('s4')">← Back</button>
+        <button class="btn btn-primary" onclick="goTo('s6')">Continue →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 6 -->
+  <div class="screen" id="screen-s6">
+    <div class="progress-wrap">
+      <div class="progress-top"><span class="progress-label">Your application</span><span class="progress-step">6 of 6</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+    </div>
+    <div class="card">
+      <div class="step-badge">Step 6 of 6 · Team performance</div>
+      <div class="step-title">How did your team work together?</div>
+      <div class="step-desc">This is the human story behind the company — commitment, resilience, and growth. It matters especially in the interview round at COY. Worth 15 points.</div>
+      <div class="field">
+        <label>What was your team's attendance like throughout the program?</label>
+        <textarea id="f_attendance" placeholder="e.g. Average attendance was 88% across weekly sessions. Two members had scheduling conflicts in month 2 but we reorganized tasks so no deliverables were delayed."></textarea>
+      </div>
+      <div class="field">
+        <label>Describe a specific challenge your team faced and how you solved it.</label>
+        <textarea id="f_challenge" placeholder="e.g. Our supplier backed out 2 weeks before our sales launch. We spent 3 days contacting 15 alternatives, compared prices and quality, and found one that met our standards at a lower cost — which actually improved our margin."></textarea>
+      </div>
+      <div class="field">
+        <label>How did this experience change each of you? What did you learn individually and as a group?</label>
+        <textarea id="f_growth" placeholder="e.g. Our CEO went from being afraid of public speaking to presenting to 200 people at the regional fair. Our CFO learned to build a real P&L. As a group, we learned that honest disagreements make better decisions."></textarea>
+      </div>
+      <div class="nav-row">
+        <button class="btn btn-ghost" onclick="goTo('s5')">← Back</button>
+        <button class="btn btn-primary" onclick="evaluate()">See my feedback →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="screen" id="screen-results">
+    <div class="card" style="margin-bottom:10px;">
+      <div class="results-company" id="res-name"></div>
+      <div class="results-sub">Application feedback · Company of the Year</div>
+      <div class="overall-box">
+        <div class="overall-label">Overall picture</div>
+        <div class="overall-text" id="res-overall"></div>
+      </div>
+    </div>
+    <div id="res-dims"></div>
+    <div class="disclaimer">
+      <div class="disclaimer-title">⚠️ Important disclaimer</div>
+      <p>These are AI-generated suggestions based on the COY evaluation criteria. This is a <strong>practice tool only</strong> — your responses are not saved or sent anywhere. Real judges are human professionals with different backgrounds and perspectives, and their evaluations are inherently subjective. A strong result here does not guarantee selection, and a weak result does not mean you won't make it. <strong>If you have questions, talk to your teacher, mentor, or your closest JA representative.</strong></p>
+    </div>
+    <div class="nav-row" style="margin-top:1.25rem;">
+      <button class="btn btn-ghost" onclick="goTo('intro')">← Start over</button>
+      <button class="btn btn-primary" onclick="goTo('s1')">Practice again →</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+var currentScreen = 'intro';
+
+function goTo(id) {
+  document.getElementById('screen-' + currentScreen).classList.remove('active');
+  currentScreen = id;
+  document.getElementById('screen-' + id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('f_product').addEventListener('input', function() {
+  document.getElementById('cc_product').textContent = this.value.length + ' chars';
+});
+
+function getVal(id) { return (document.getElementById(id).value || '').trim(); }
+
+function scoreOrgMgmt() {
+  var roles = getVal('f_roles'), sh = getVal('f_shareholders'), fin = getVal('f_finance');
+  var s = 0;
+  if (roles.length > 60) s++;
+  if (/ceo|cfo|director|marketing|finance|production|hr|president|treasurer/i.test(roles)) s++;
+  if (sh.length > 40) s++;
+  if (/assembl|report|meet|email|monthly|weekly/i.test(sh)) s += 0.5;
+  if (fin.length > 40) s++;
+  if (/\d/.test(fin)) s++;
+  if (/break.?even|profit|revenue|income|cost|capital|return/i.test(fin)) s += 0.5;
+  return Math.min(4, Math.round(s * 0.72));
+}
+
+function scoreTripleImpact() {
+  var eco = getVal('f_economic'), soc = getVal('f_social'), env = getVal('f_env');
+  var s = 0;
+  if (eco.length > 40) s++;
+  if (/\d/.test(eco)) s += 0.5;
+  if (soc.length > 50) s++;
+  if (/donat|ngo|ong|community|school|partner|workshop|people|student|benefi/i.test(soc)) s += 0.5;
+  if (env.length > 50) s++;
+  if (/recycl|biodegrad|co2|carbon|sustainab|waste|plastic|organic|material/i.test(env)) s += 0.5;
+  if (/\d/.test(soc) || /\d/.test(env)) s += 0.5;
+  return Math.min(4, Math.round(s * 0.72));
+}
+
+function scoreInnovation() {
+  var inn = getVal('f_innovation'), tec = getVal('f_tech');
+  var s = 0;
+  if (inn.length > 60) s++;
+  if (/compared|competit|unlike|alternative|unique|different|only|no other|first/i.test(inn)) s++;
+  if (tec.length > 40) s++;
+  if (/3d|design thinking|canvas|agile|digital|app|software|platform|technolog|prototype|methodolog/i.test(tec)) s++;
+  return Math.min(4, s);
+}
+
+function scoreScale() {
+  var sc = getVal('f_scale'), rec = getVal('f_recognition');
+  var s = 0;
+  if (sc.length > 50) s++;
+  if (/expand|grow|new market|geographic|province|city|countr|international|product line|retail/i.test(sc)) s++;
+  if (rec.length > 30) s++;
+  if (/media|newspaper|radio|tv|certif|award|municipali|government|partner|ngo|ong|recognit|school|institute/i.test(rec)) s++;
+  return Math.min(4, s);
+}
+
+function scoreTeam() {
+  var att = getVal('f_attendance'), ch = getVal('f_challenge'), gr = getVal('f_growth');
+  var s = 0;
+  if (att.length > 30) s++;
+  if (/\d/.test(att) || /%/.test(att)) s += 0.5;
+  if (ch.length > 60) s++;
+  if (/solved|resolved|found|decided|changed|adapt|pivot|contact|search|alter/i.test(ch)) s += 0.5;
+  if (gr.length > 60) s++;
+  if (/learn|grew|transform|confiden|leader|skill|afraid|now|before/i.test(gr)) s += 0.5;
+  return Math.min(4, Math.round(s * 0.8));
+}
+
+var FB = {
+  org: [
+    "This section needs more development. Judges want to know exactly who was responsible for what, how decisions were made, how you communicated with shareholders, and your key financial figures — capital, costs, revenue, profit, and whether you hit break-even.",
+    "The basics are here, but more specificity is needed. Add your actual financial numbers, name your key roles clearly, and describe at least one concrete shareholder communication moment.",
+    "Your organizational structure and finances come through. To push further, add more precision to the numbers and describe your shareholder communication process — format, frequency, and content.",
+    "You describe a well-structured company with clear roles, financial discipline, and solid shareholder communication. One of the strongest parts of your application."
+  ],
+  orgTip: "Add exact financial figures (capital raised, total revenue, total costs, net profit, break-even point in units). Name your internal roles explicitly. Describe at least one shareholder communication moment — a formal assembly, a written report, or a capitalization meeting.",
+
+  impact: [
+    "Impact is one of the most weighted criteria. All three pillars — economic, social, and environmental — need concrete, measurable evidence. Right now one or more are missing or underdeveloped.",
+    "Some impact is described, but not all three pillars feel equally strong. Judges score all three areas equally — make sure each is backed by real numbers or specific examples.",
+    "Good coverage of all three pillars. To push further, quantify your social and environmental contributions more specifically — people reached, kg of waste diverted, CO₂ saved per unit.",
+    "Strong triple impact. You show measurable economic results, meaningful social contribution, and genuine environmental responsibility. This will stand out."
+  ],
+  impactTip: "For each pillar, add at least one specific number or outcome. 'We donated 5% of profits to X' is stronger than 'we supported social causes.' 'Each unit saves 200g of CO₂' is stronger than 'we use sustainable materials.'",
+
+  innovation: [
+    "The innovation section needs more development. Focus on two things: (1) what makes your solution genuinely new vs. what already exists, and (2) what tools or methodologies you used to develop and validate it.",
+    "You describe your product well, but the innovation angle needs sharper framing. Add a direct comparison to alternatives and be explicit about why yours is better, cheaper, or more accessible.",
+    "Good innovation story. Consider adding a specific competitive comparison — how does your solution outperform the closest existing alternatives?",
+    "Your innovation narrative is clear and well-differentiated. You explain not just what you built, but why it's different — and back it with methodology. Judges will appreciate this."
+  ],
+  innovationTip: "Add a brief competitive comparison — even one sentence: 'The closest alternatives are X, but they cost 3x more / aren't locally made / don't address Y. Our solution does Z instead.' This shows you researched your market.",
+
+  scale: [
+    "This section needs development. Describe where you could go next with specific targets, and list any external recognition — no matter how small.",
+    "Growth potential is mentioned but needs more grounding. Connect it to something already happening: demand you've seen, a partner interested in scaling, or a concrete geographic plan.",
+    "Good scalability narrative. If you've received any external recognition — a newspaper mention, a government meeting, a certification — make sure it's visible in your report.",
+    "Excellent — you show both a clear vision for growth and real-world validation from external actors. External recognition is one of the strongest signals in this dimension."
+  ],
+  scaleTip: "Even small external validation goes a long way: a local newspaper article, a message from a customer in another city, a meeting with a municipal official, or an industry certification. Include whatever you have — judges weigh real-world validators heavily.",
+
+  team: [
+    "The human story matters — especially for the interview round at COY. Describe your attendance honestly, give a specific challenge you overcame together, and explain how this experience transformed specific team members.",
+    "Some resilience comes through, but the growth section needs more concrete personal stories. What did specific people learn? How did the experience change each of you?",
+    "Good team narrative. The growth section could be richer — try to include a specific personal transformation for at least one team member. Concrete stories are more memorable than general statements.",
+    "Your team story comes through powerfully. Real commitment, a challenge overcome together, and genuine individual growth — exactly what judges look for in the interview round."
+  ],
+  teamTip: "Pick your most dramatic team challenge and walk through it like a story: what happened, how you felt, what you decided, and what you learned. Judges will ask about this directly in the interview — having a clear, honest narrative ready is essential."
+};
+
+function getBadge(s) {
+  if (s >= 4) return ['Strong', 'b-strong'];
+  if (s >= 3) return ['Good', 'b-good'];
+  if (s >= 2) return ['Can improve', 'b-improve'];
+  return ['Needs work', 'b-weak'];
+}
+
+function evaluate() {
+  var name = getVal('f_name') || 'Your company';
+  var dims = [
+    { label: 'Organizational management', s: scoreOrgMgmt(),     fb: FB.org,       tip: FB.orgTip },
+    { label: 'Triple impact',             s: scoreTripleImpact(), fb: FB.impact,    tip: FB.impactTip },
+    { label: 'Innovation & technology',   s: scoreInnovation(),   fb: FB.innovation,tip: FB.innovationTip },
+    { label: 'Projection & scalability',  s: scoreScale(),        fb: FB.scale,     tip: FB.scaleTip },
+    { label: 'Team performance',          s: scoreTeam(),         fb: FB.team,      tip: FB.teamTip }
+  ];
+
+  var avg = dims.reduce(function(a, d) { return a + d.s; }, 0) / dims.length;
+  var overall;
+  if (avg >= 3.5) overall = 'This application reads as strong across most dimensions. The evidence is there — now focus on communicating it clearly and concisely in your written report. Every claim should be backed by a specific number or example.';
+  else if (avg >= 2.5) overall = 'This application has a solid foundation, but a few dimensions could be stronger — especially around concrete data, measurable impact, and external validation. Read the tips below and revise your report before submitting.';
+  else overall = 'There is real potential here, but the application needs more development in several areas. Judges look for specifics: numbers, evidence, real stories, and external validators. Work through the feedback below and make sure your report addresses each dimension with concrete examples.';
+
+  document.getElementById('res-name').textContent = name;
+  document.getElementById('res-overall').textContent = overall;
+
+  var html = '';
+  dims.forEach(function(d) {
+    var b = getBadge(d.s);
+    var fbText = d.fb[Math.min(d.s, d.fb.length - 1)];
+    html += '<div class="dim-card">';
+    html += '<div class="dim-top"><span class="dim-name">' + d.label + '</span><span class="badge ' + b[1] + '">' + b[0] + '</span></div>';
+    html += '<div class="dim-feedback">' + fbText + '</div>';
+    if (d.s < 4) html += '<div class="dim-tip"><strong>To strengthen this:</strong> ' + d.tip + '</div>';
+    html += '</div>';
+  });
+  document.getElementById('res-dims').innerHTML = html;
+  goTo('results');
+}
+</script>
+</body>
+</html>
